@@ -28,7 +28,7 @@ public final class GeneratedDesign {
     );
     public record SystemSpec(String id, String owner, String contract, String implementation) {}
     public static final Map<String, SystemSpec> SYSTEMS = Map.ofEntries(
-        entry("ck3_export", new SystemSpec("ck3_export", "ck3", "CKCRAFT1 request/ack log frames with character, sequence and actual prowess", "tools/design.py")),
+        entry("ck3_export", new SystemSpec("ck3_export", "ck3", "singleplayer CKCRAFT1 request/ack via GetPlayer; actual character/sequence/prowess and persistent ckcraft_opponent reference, independent of debug_log ROOT/SCOPE context", "tools/design.py")),
         entry("bridge", new SystemSpec("bridge", "python", "loopback authenticated singleplayer request/claim/result/ack state machine", "bridge/ckcraft/state.py")),
         entry("http", new SystemSpec("http", "python", "bounded JSON, no browser origins, constant time token check", "bridge/ckcraft/server.py")),
         entry("log_reader", new SystemSpec("log_reader", "python", "incremental frames, partial writes, rotation, no historic requests on initial start", "bridge/ckcraft/log_reader.py")),

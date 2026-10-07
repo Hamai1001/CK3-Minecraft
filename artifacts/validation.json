@@ -8,7 +8,7 @@
     "generatedFilesMatch": true
   },
   "automatedTests": {
-    "pythonPassed": 25,
+    "pythonPassed": 27,
     "javaPassed": 3,
     "gradleBuild": "passed"
   },
@@ -53,5 +53,19 @@
     "Portable Windows runtime and one-click installation",
     "Sieges, battles, additional events and optional multiplayer",
     "License/remix/listing choices and genuine full roundtrip media"
-  ]
+  ],
+  "ck3UserTest": {
+    "reportedVersion": "Crozier 1.20.0.4",
+    "inputSource": "actual debug.log line supplied by user",
+    "originalFrame": "CKCRAFT1|REQUEST|free_travel||||0|0|||none",
+    "originalResult": "rejected; all ROOT.Char fields empty",
+    "proposedCorrection": "singleplayer GetPlayer and persistent reference to selected opponent; strict protocol remains enforced",
+    "correctedLiveExportVerified": false,
+    "correctedLiveAckVerified": false
+  },
+  "currentBuild": {
+    "jarSha256": "54f1c04c28b385628deda9772fa09da720845181d9ddd4a6a0727f7bd23b75d9",
+    "minecraftRuntimeRetested": false,
+    "note": "Earlier Minecraft runtime evidence and hash remain attached to the previous build. This change updates CK3 export, protocol diagnostics and the unused generated system description; the Java build and rule tests pass."
+  }
 }

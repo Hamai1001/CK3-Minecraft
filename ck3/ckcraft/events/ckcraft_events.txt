@@ -8,6 +8,7 @@ ckcraft.1000 = {
     immediate = {
         random_courtier_or_guest = { limit = { is_alive = yes is_adult = yes NOT = { this = root } } save_scope_as = ckcraft_opponent }
         if = { limit = { exists = scope:ckcraft_opponent }
+            set_variable = { name = ckcraft_opponent value = scope:ckcraft_opponent }
             if = { limit = { NOT = { has_variable = ckcraft_sequence } } set_variable = { name = ckcraft_sequence value = 0 } }
         change_variable = { name = ckcraft_sequence add = 1 }
         add_character_flag = ckcraft_pending
@@ -37,6 +38,7 @@ ckcraft.2001 = {
         add_prestige = 25 add_gold = 0
         debug_log = ckcraft_ack_won
         remove_character_flag = ckcraft_pending
+        if = { limit = { has_variable = ckcraft_opponent } remove_variable = ckcraft_opponent }
         if = { limit = { exists = current_travel_plan } current_travel_plan = { resume_travel_plan = yes } }
     }
 }
@@ -49,6 +51,7 @@ ckcraft.2002 = {
         add_prestige = -10 add_gold = 0
         debug_log = ckcraft_ack_lost
         remove_character_flag = ckcraft_pending
+        if = { limit = { has_variable = ckcraft_opponent } remove_variable = ckcraft_opponent }
         if = { limit = { exists = current_travel_plan } current_travel_plan = { resume_travel_plan = yes } }
     }
 }
@@ -61,6 +64,7 @@ ckcraft.2003 = {
         add_prestige = 0 add_gold = 0
         debug_log = ckcraft_ack_aborted
         remove_character_flag = ckcraft_pending
+        if = { limit = { has_variable = ckcraft_opponent } remove_variable = ckcraft_opponent }
         if = { limit = { exists = current_travel_plan } current_travel_plan = { resume_travel_plan = yes } }
     }
 }
@@ -73,6 +77,7 @@ ckcraft.2004 = {
         add_prestige = 0 add_gold = 0
         debug_log = ckcraft_ack_travelled
         remove_character_flag = ckcraft_pending
+        if = { limit = { has_variable = ckcraft_opponent } remove_variable = ckcraft_opponent }
         if = { limit = { exists = current_travel_plan } current_travel_plan = { resume_travel_plan = yes } }
     }
 }

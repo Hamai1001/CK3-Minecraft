@@ -9,7 +9,7 @@
     {
       "id": "ck3_export",
       "owner": "ck3",
-      "contract": "CKCRAFT1 request/ack log frames with character, sequence and actual prowess",
+      "contract": "singleplayer CKCRAFT1 request/ack via GetPlayer; actual character/sequence/prowess and persistent ckcraft_opponent reference, independent of debug_log ROOT/SCOPE context",
       "implementation": "tools/design.py"
     },
     {

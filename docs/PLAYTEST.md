@@ -1,6 +1,6 @@
 # Echte Spielprüfung auf Windows
 
-Diese Schritte sind Entwicklungstests. Sie erfüllen noch nicht Meltys Ein-Klick-Anforderung. CK3 benötigt für den derzeitigen Log-/Konsolenweg den Debug-Modus; nutze eine neue, nicht-Ironman-Testkampagne. Keine bestehende Kampagne konvertieren. CK3-Version noch offen; verwendete Skriptbefehle sind anhand der öffentlichen Engine-Dokumentation 1.10.2 geprüft, nicht anhand deiner aktuellen Installation.
+Diese Schritte sind Entwicklungstests. Sie erfüllen noch nicht Meltys Ein-Klick-Anforderung. CK3 benötigt für den derzeitigen Log-/Konsolenweg den Debug-Modus; nutze eine neue, nicht-Ironman-Testkampagne. Keine bestehende Kampagne konvertieren. Der Nutzer testet CK3 Crozier **1.20.0.4**. Entscheidungen laden, aber der ursprüngliche Export über `ROOT.Char` lieferte leere dynamische Felder. Der aktualisierte Einzelspieler-Export über `GetPlayer` benötigt noch einen erfolgreichen Live-Request und ACK in dieser Version. Die öffentliche Engine-Referenz 1.10.2 belegt die verwendeten Funktionen, nicht die erfolgreiche aktuelle Integration.
 
 ## Voraussetzungen
 
@@ -40,4 +40,30 @@ Die gebaute JAR und die passende Fabric-API-JAR in die Mods der separaten Instan
 5. **In Minecraft reisen** in CK3 wählen, frei umsehen, `/ckcraft return`. Das gültige Ergebnis ist `travelled`, ohne zusätzliche Belohnung. Einen hängenden CK3-Übergang kann die Entscheidung **Ausstehende Minecraft-Reise abbrechen** ohne Belohnung lösen; einen noch aktiven Minecraft-Durchlauf ebenfalls abbrechen.
 6. Ein Bild oder einen Clip dieser tatsächlich laufenden Version aufnehmen. Ein Minecraft-Entwicklungstest mit synthetischen CK3-Zeilen ist kein Nachweis der vollständigen Verbindung und darf nicht als Melty-Veröffentlichungsbeleg dienen.
 
-Aufzulösende Punkte vor Veröffentlichung: genaue CK3-Version und tatsächliche Skript-/Scope-Kompatibilität, automatische sichere Rückgabe statt manuellem Konsolenbefehl, zuverlässige Pause und Wechsel, Bereitstellung einer startbaren Minecraft-Welt, vollständige tragbare Laufzeiten, Ein-Klick-Installation, Lizenz/Credits/Remix-Entscheidung und echte Medien.
+Aufzulösende Punkte vor Veröffentlichung: tatsächliche Skript-/Scope-Kompatibilität mit Crozier 1.20.0.4, automatische sichere Rückgabe statt manuellem Konsolenbefehl, zuverlässige Pause und Wechsel, Bereitstellung einer startbaren Minecraft-Welt, vollständige tragbare Laufzeiten, Ein-Klick-Installation, Lizenz/Credits/Remix-Entscheidung und echte Medien.
+
+## Update bei leeren CK3-Exportfeldern
+
+Der erste gemeldete Crozier-Test lieferte `CKCRAFT1|REQUEST|free_travel||||0|0|||none`. Das sind fehlende Kampagnendaten; die Verbindung lehnt sie ab. Die Entscheidung und der Logpfad können trotzdem korrekt eingerichtet sein. Der Einzelspieler-Export nutzt nun `GetPlayer`, und der echte ausgewählte Hofcharakter wird vor dem Duell in `ckcraft_opponent` gespeichert. Die Datenprüfung bleibt streng.
+
+1. Testkampagne speichern und CK3 beenden. Die Verbindung im ersten PowerShell-Fenster mit **Strg+C** stoppen.
+2. Den aktuellen Projekt-ZIP von GitHub herunterladen und in einen neuen Ordner entpacken. Im Explorer den Ordner öffnen, der `README.md` und `tools` enthält; in die Adressleiste `powershell` eingeben.
+3. Den aktualisierten CK3-Mod installieren:
+
+   ```powershell
+   $documentsPath = [Environment]::GetFolderPath("MyDocuments")
+   py -3.12 .\tools\install_ck3.py --documents "$documentsPath"
+   ```
+
+   Der Installer aktualisiert seine unveränderten eigenen Dateien anhand des bisherigen Installationsmanifests. Er ersetzt keine selbst bearbeiteten Mods. Das vorhandene Test-Playset kann weiterverwendet werden.
+4. CK3 wieder im Debug-Modus starten und die Testkampagne laden. Im neuen Projektordner die Verbindung starten:
+
+   ```powershell
+   $env:PYTHONPATH = "$PWD\bridge"
+   py -3.12 -m ckcraft --ck3-log "$documentsPath\Paradox Interactive\Crusader Kings III\logs\debug.log" --state "$env:LOCALAPPDATA\CKCraft\TestCampaign" --campaign "TestCampaign"
+   ```
+
+5. Falls sichtbar, zuerst **Ausstehende Minecraft-Reise abbrechen** ausführen; damit wird die abgelehnte alte Anfrage im CK3-Charakter freigegeben. Danach **In Minecraft reisen** erneut ausführen und zur laufenden Minecraft-Testwelt wechseln. Bei offenem Pausemenü mit Esc fortsetzen.
+6. Erwartet werden echte ausgefüllte Felder in einer neuen `CKCRAFT1|REQUEST|...`-Zeile und `CK3 event accepted: free_travel` im Verbindungsterminal. Falls das weiter ausbleibt, die neueste Request-Zeile und die entsprechenden CKCraft-Meldungen in CK3s `logs/error.log` bereitstellen. `bridge.json` nicht weitergeben.
+
+Minecraft verwendet dasselbe Protokoll; das bestehende Fabric-Profil und der gesetzte Verbindungspfad können für diesen Export-Test weiterverwendet werden. Ein erfolgreicher `/ckcraft status` allein bestätigt weder die CK3-Datenübertragung noch den Rücklauf.

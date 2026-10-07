@@ -98,6 +98,11 @@ def java(tables):
 
 
 GUARD = "is_ai = no has_character_flag = ckcraft_enabled NOT = { has_character_flag = ckcraft_pending }"
+# debug_log can localize without the event's ROOT/SCOPE data context. The
+# supported mode is singleplayer, so use the documented global player getter.
+# Keep the real chosen courtier on that character for localization to read.
+PLAYER = "GetPlayer"
+OPPONENT = PLAYER + ".MakeScope.Var('ckcraft_opponent').Char"
 
 
 def generate(tables):
@@ -113,12 +118,13 @@ def generate(tables):
         if row["enemy"] != "none":
             action = f"""random_courtier_or_guest = {{ limit = {{ is_alive = yes is_adult = yes NOT = {{ this = root }} }} save_scope_as = ckcraft_opponent }}
         if = {{ limit = {{ exists = scope:ckcraft_opponent }}
+            set_variable = {{ name = ckcraft_opponent value = scope:ckcraft_opponent }}
             {start}
             if = {{ limit = {{ exists = current_travel_plan }} current_travel_plan = {{ pause_travel_plan = yes }} }}
             debug_log = ckcraft_request_{rid}
         }}"""
-            opponent = "[SCOPE.sC('ckcraft_opponent').GetID]|[SCOPE.sC('ckcraft_opponent').GetProwess]"
-            opponent_name = "[SCOPE.sC('ckcraft_opponent').GetFirstNameNoTooltip]"
+            opponent = f"[{OPPONENT}.GetID]|[{OPPONENT}.GetProwess]"
+            opponent_name = f"[{OPPONENT}.GetFirstNameNoTooltip]"
         else:
             action = f"{start}\n        debug_log = ckcraft_request_{rid}"
             opponent,opponent_name = "0|0","none"
@@ -131,7 +137,7 @@ def generate(tables):
     }}
 }}
 """)
-        loc[f"ckcraft_request_{rid}"] = (f"CKCRAFT1|REQUEST|{rid}|[ROOT.Char.GetID]|[ROOT.Char.MakeScope.Var('ckcraft_sequence').GetValue]|[ROOT.Char.GetProwess]|{opponent}|[ROOT.Char.GetCurrentLocation.GetID]|[ROOT.Char.GetFirstNameNoTooltip]|{opponent_name}")
+        loc[f"ckcraft_request_{rid}"] = (f"CKCRAFT1|REQUEST|{rid}|[{PLAYER}.GetID]|[{PLAYER}.MakeScope.Var('ckcraft_sequence').GetValue]|[{PLAYER}.GetProwess]|{opponent}|[{PLAYER}.GetCurrentLocation.GetID]|[{PLAYER}.GetFirstNameNoTooltip]|{opponent_name}")
     for row in tables["outcomes"]["rows"]:
         reward = f"add_prestige = {row['prestige']} add_gold = {row['gold']}"
         events.append(f"""{row['ck3_event']} = {{
@@ -142,11 +148,12 @@ def generate(tables):
         {reward}
         debug_log = ckcraft_ack_{row['id']}
         remove_character_flag = ckcraft_pending
+        if = {{ limit = {{ has_variable = ckcraft_opponent }} remove_variable = ckcraft_opponent }}
         if = {{ limit = {{ exists = current_travel_plan }} current_travel_plan = {{ resume_travel_plan = yes }} }}
     }}
 }}
 """)
-        loc[f"ckcraft_ack_{row['id']}"] = f"CKCRAFT1|ACK|[ROOT.Char.GetID]|[ROOT.Char.MakeScope.Var('ckcraft_sequence').GetValue]|{row['id']}"
+        loc[f"ckcraft_ack_{row['id']}"] = f"CKCRAFT1|ACK|[{PLAYER}.GetID]|[{PLAYER}.MakeScope.Var('ckcraft_sequence').GetValue]|{row['id']}"
     result["ck3/ckcraft/events/ckcraft_events.txt"] = "\n".join(events)
     on_actions = ["# Generated. Additive hooks; no vanilla event files are replaced."]
     decisions = ["# Generated.",f"""ckcraft_enable_decision = {{

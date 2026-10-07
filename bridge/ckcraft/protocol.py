@@ -53,6 +53,12 @@ def parse_line(line: str) -> Request | Ack | None:
         raise ValueError("invalid CKCRAFT1 frame")
     if parts[2] not in {"travel_duel", "free_travel"}:
         raise ValueError("unknown scenario")
+    fields = {3: "character", 4: "sequence", 5: "prowess", 6: "opponent",
+              7: "opponent_prowess", 8: "province", 9: "name", 10: "opponent_name"}
+    missing = [name for index, name in fields.items() if not parts[index]]
+    if missing:
+        raise ValueError("incomplete CK3 export (empty: " + ", ".join(missing) +
+                         "); update the CKCraft mod and retry the decision")
     if any(not s or len(s) > 160 or any(ord(c) < 32 for c in s) for s in parts[9:]):
         raise ValueError("invalid character name")
     request = Request(parts[2], integer(parts[3], 1, 2**32-1), integer(parts[4], 1, 2**31-1),
