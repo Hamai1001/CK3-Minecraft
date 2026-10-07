@@ -1,4 +1,4 @@
 # Generated. Additive hooks; no vanilla event files are replaced.
 
 on_travel_plan_start = { on_actions = { ckcraft_travel_start } }
-ckcraft_travel_start = { trigger = { is_ai = no has_character_flag = ckcraft_enabled NOT = { has_character_flag = ckcraft_pending } } events = { ckcraft.1000 } }
+ckcraft_travel_start = { trigger = { is_ai = no has_character_flag = ckcraft_enabled NOT = { has_character_flag = ckcraft_pending } NOT = { has_global_variable = ckcraft_return_actor } } events = { ckcraft.1000 } }

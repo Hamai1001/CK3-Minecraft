@@ -71,6 +71,9 @@ class StateTests(unittest.TestCase):
         self.assertIn("var:ckcraft_sequence = 1",command)
         self.assertIn("has_character_flag = ckcraft_pending",command)
         self.assertIn("id = ckcraft.2001",command)
+        self.assertIn("exists = global_var:ckcraft_return_actor",command)
+        self.assertIn("global_var:ckcraft_return_actor = {",command)
+        self.assertNotIn("character:",command)
         self.assertFalse(self.state.acknowledge(Ack(42,2,"won")))
         self.assertFalse(self.state.acknowledge(Ack(83,1,"won")))
         self.assertFalse(self.state.acknowledge(Ack(42,1,"lost")))
@@ -209,6 +212,22 @@ class HttpIntegrationTests(unittest.TestCase):
 
 
 class DesignTests(unittest.TestCase):
+    def test_return_actor_and_global_nonce_are_set_before_export_and_cleared_after_ack(self):
+        tables = design.load()
+        files = design.generate(tables)
+        events = files["ck3/ckcraft/events/ckcraft_events.txt"]
+        for row in tables["scenarios"]["rows"]:
+            body = events.split(row["ck3_event"] + " = {", 1)[1].split("\n}\n", 1)[0]
+            export = body.index("debug_log = ckcraft_request_")
+            self.assertLess(body.index("set_global_variable = { name = ckcraft_return_actor value = root }"), export)
+            self.assertLess(body.index("change_global_variable = { name = ckcraft_sequence_counter add = 1 }"), export)
+            self.assertIn("set_variable = { name = ckcraft_sequence value = global_var:ckcraft_sequence_counter }", body)
+            self.assertIn("NOT = { has_global_variable = ckcraft_return_actor }", body)
+        for row in tables["outcomes"]["rows"]:
+            body = events.split(row["ck3_event"] + " = {", 1)[1].split("\n}\n", 1)[0]
+            self.assertIn("this = global_var:ckcraft_return_actor", body)
+            self.assertLess(body.index("debug_log = ckcraft_ack_"), body.index("remove_global_variable = ckcraft_return_actor"))
+
     def test_debug_export_is_independent_of_event_localization_context(self):
         tables = design.load()
         files = design.generate(tables)

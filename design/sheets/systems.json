@@ -9,7 +9,7 @@
     {
       "id": "ck3_export",
       "owner": "ck3",
-      "contract": "singleplayer CKCRAFT1 request/ack via GetPlayer; actual character/sequence/prowess and persistent ckcraft_opponent reference, independent of debug_log ROOT/SCOPE context",
+      "contract": "singleplayer CKCRAFT1 via GetPlayer; campaign-wide unique sequence, stored ckcraft_return_actor character reference and real ckcraft_opponent; independent of debug_log ROOT/SCOPE context",
       "implementation": "tools/design.py"
     },
     {
@@ -33,7 +33,7 @@
     {
       "id": "ck3_return",
       "owner": "python",
-      "contract": "guarded numeric effect command, requires actual matching CK3 acknowledgement",
+      "contract": "guarded effect via global_var:ckcraft_return_actor and campaign-wide sequence; runtime IDs never used as historical character links; matching CK3 ACK required",
       "implementation": "bridge/ckcraft/return_command.py"
     },
     {

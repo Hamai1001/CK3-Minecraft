@@ -8,7 +8,7 @@
     "generatedFilesMatch": true
   },
   "automatedTests": {
-    "pythonPassed": 27,
+    "pythonPassed": 28,
     "javaPassed": 3,
     "gradleBuild": "passed"
   },
@@ -56,16 +56,26 @@
   ],
   "ck3UserTest": {
     "reportedVersion": "Crozier 1.20.0.4",
-    "inputSource": "actual debug.log line supplied by user",
+    "inputSource": "Actual CK3 debug.log lines and Windows playtest confirmations supplied by user",
     "originalFrame": "CKCRAFT1|REQUEST|free_travel||||0|0|||none",
     "originalResult": "rejected; all ROOT.Char fields empty",
     "proposedCorrection": "singleplayer GetPlayer and persistent reference to selected opponent; strict protocol remains enforced",
-    "correctedLiveExportVerified": false,
-    "correctedLiveAckVerified": false
+    "correctedLiveExportVerified": true,
+    "correctedLiveAckVerified": true,
+    "testedBuildCommit": "8329bfef358a53f412cdc6ab2cf6a8f7c875e61e",
+    "freeTravelRoundtripUserConfirmed": true,
+    "minecraftRoadAndRulerNameUserConfirmed": true,
+    "returnMethod": "Manual CK3 console command with historical character key 6878 after runtime ID 11999 failed",
+    "acknowledgementReported": "CK3 acknowledged the result",
+    "currentReferenceBasedReturnLiveVerified": false,
+    "duelRoundtripLiveVerified": false,
+    "scope": "Confirms the prior build with a manually corrected return command; does not validate the current global reference implementation"
   },
   "currentBuild": {
-    "jarSha256": "54f1c04c28b385628deda9772fa09da720845181d9ddd4a6a0727f7bd23b75d9",
+    "jarSha256": "58822ee9e5ad69d03c3ada7d7d3cb28edbcbb9b4e61a82e548453172da6010e5",
     "minecraftRuntimeRetested": false,
-    "note": "Earlier Minecraft runtime evidence and hash remain attached to the previous build. This change updates CK3 export, protocol diagnostics and the unused generated system description; the Java build and rule tests pass."
+    "note": "Earlier runtime and user evidence remains attached to its tested build. The current change replaces historical character links with a stored actor reference, adds a campaign-wide sequence and updates generated contracts. Python tests, Java rule tests and Gradle build pass; current native CK3 scripts require a new live request/return test.",
+    "nativeReturnTarget": "global_var:ckcraft_return_actor with a campaign-wide sequence guard",
+    "nativeReturnLiveVerified": false
   }
 }

@@ -4,13 +4,20 @@ namespace = ckcraft
 ckcraft.1000 = {
     type = character_event
     hidden = yes
-    trigger = { is_ai = no has_character_flag = ckcraft_enabled NOT = { has_character_flag = ckcraft_pending } }
+    trigger = { is_ai = no has_character_flag = ckcraft_enabled NOT = { has_character_flag = ckcraft_pending } NOT = { has_global_variable = ckcraft_return_actor } }
     immediate = {
         random_courtier_or_guest = { limit = { is_alive = yes is_adult = yes NOT = { this = root } } save_scope_as = ckcraft_opponent }
         if = { limit = { exists = scope:ckcraft_opponent }
             set_variable = { name = ckcraft_opponent value = scope:ckcraft_opponent }
-            if = { limit = { NOT = { has_variable = ckcraft_sequence } } set_variable = { name = ckcraft_sequence value = 0 } }
-        change_variable = { name = ckcraft_sequence add = 1 }
+            if = { limit = { NOT = { has_global_variable = ckcraft_sequence_counter } }
+            set_global_variable = { name = ckcraft_sequence_counter value = 0 }
+            if = { limit = { has_variable = ckcraft_sequence }
+                set_global_variable = { name = ckcraft_sequence_counter value = var:ckcraft_sequence }
+            }
+        }
+        change_global_variable = { name = ckcraft_sequence_counter add = 1 }
+        set_variable = { name = ckcraft_sequence value = global_var:ckcraft_sequence_counter }
+        set_global_variable = { name = ckcraft_return_actor value = root }
         add_character_flag = ckcraft_pending
             if = { limit = { exists = current_travel_plan } current_travel_plan = { pause_travel_plan = yes } }
             debug_log = ckcraft_request_travel_duel
@@ -21,10 +28,17 @@ ckcraft.1000 = {
 ckcraft.1001 = {
     type = character_event
     hidden = yes
-    trigger = { is_ai = no has_character_flag = ckcraft_enabled NOT = { has_character_flag = ckcraft_pending } }
+    trigger = { is_ai = no has_character_flag = ckcraft_enabled NOT = { has_character_flag = ckcraft_pending } NOT = { has_global_variable = ckcraft_return_actor } }
     immediate = {
-        if = { limit = { NOT = { has_variable = ckcraft_sequence } } set_variable = { name = ckcraft_sequence value = 0 } }
-        change_variable = { name = ckcraft_sequence add = 1 }
+        if = { limit = { NOT = { has_global_variable = ckcraft_sequence_counter } }
+            set_global_variable = { name = ckcraft_sequence_counter value = 0 }
+            if = { limit = { has_variable = ckcraft_sequence }
+                set_global_variable = { name = ckcraft_sequence_counter value = var:ckcraft_sequence }
+            }
+        }
+        change_global_variable = { name = ckcraft_sequence_counter add = 1 }
+        set_variable = { name = ckcraft_sequence value = global_var:ckcraft_sequence_counter }
+        set_global_variable = { name = ckcraft_return_actor value = root }
         add_character_flag = ckcraft_pending
         debug_log = ckcraft_request_free_travel
     }
@@ -33,12 +47,15 @@ ckcraft.1001 = {
 ckcraft.2001 = {
     type = character_event
     hidden = yes
-    trigger = { is_ai = no is_alive = yes has_character_flag = ckcraft_pending }
+    trigger = { is_ai = no is_alive = yes has_character_flag = ckcraft_pending
+        OR = { NOT = { has_global_variable = ckcraft_return_actor } this = global_var:ckcraft_return_actor }
+    }
     immediate = {
         add_prestige = 25 add_gold = 0
         debug_log = ckcraft_ack_won
         remove_character_flag = ckcraft_pending
         if = { limit = { has_variable = ckcraft_opponent } remove_variable = ckcraft_opponent }
+        if = { limit = { has_global_variable = ckcraft_return_actor } remove_global_variable = ckcraft_return_actor }
         if = { limit = { exists = current_travel_plan } current_travel_plan = { resume_travel_plan = yes } }
     }
 }
@@ -46,12 +63,15 @@ ckcraft.2001 = {
 ckcraft.2002 = {
     type = character_event
     hidden = yes
-    trigger = { is_ai = no is_alive = yes has_character_flag = ckcraft_pending }
+    trigger = { is_ai = no is_alive = yes has_character_flag = ckcraft_pending
+        OR = { NOT = { has_global_variable = ckcraft_return_actor } this = global_var:ckcraft_return_actor }
+    }
     immediate = {
         add_prestige = -10 add_gold = 0
         debug_log = ckcraft_ack_lost
         remove_character_flag = ckcraft_pending
         if = { limit = { has_variable = ckcraft_opponent } remove_variable = ckcraft_opponent }
+        if = { limit = { has_global_variable = ckcraft_return_actor } remove_global_variable = ckcraft_return_actor }
         if = { limit = { exists = current_travel_plan } current_travel_plan = { resume_travel_plan = yes } }
     }
 }
@@ -59,12 +79,15 @@ ckcraft.2002 = {
 ckcraft.2003 = {
     type = character_event
     hidden = yes
-    trigger = { is_ai = no is_alive = yes has_character_flag = ckcraft_pending }
+    trigger = { is_ai = no is_alive = yes has_character_flag = ckcraft_pending
+        OR = { NOT = { has_global_variable = ckcraft_return_actor } this = global_var:ckcraft_return_actor }
+    }
     immediate = {
         add_prestige = 0 add_gold = 0
         debug_log = ckcraft_ack_aborted
         remove_character_flag = ckcraft_pending
         if = { limit = { has_variable = ckcraft_opponent } remove_variable = ckcraft_opponent }
+        if = { limit = { has_global_variable = ckcraft_return_actor } remove_global_variable = ckcraft_return_actor }
         if = { limit = { exists = current_travel_plan } current_travel_plan = { resume_travel_plan = yes } }
     }
 }
@@ -72,12 +95,15 @@ ckcraft.2003 = {
 ckcraft.2004 = {
     type = character_event
     hidden = yes
-    trigger = { is_ai = no is_alive = yes has_character_flag = ckcraft_pending }
+    trigger = { is_ai = no is_alive = yes has_character_flag = ckcraft_pending
+        OR = { NOT = { has_global_variable = ckcraft_return_actor } this = global_var:ckcraft_return_actor }
+    }
     immediate = {
         add_prestige = 0 add_gold = 0
         debug_log = ckcraft_ack_travelled
         remove_character_flag = ckcraft_pending
         if = { limit = { has_variable = ckcraft_opponent } remove_variable = ckcraft_opponent }
+        if = { limit = { has_global_variable = ckcraft_return_actor } remove_global_variable = ckcraft_return_actor }
         if = { limit = { exists = current_travel_plan } current_travel_plan = { resume_travel_plan = yes } }
     }
 }

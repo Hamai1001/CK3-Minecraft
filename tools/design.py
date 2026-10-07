@@ -97,7 +97,7 @@ def java(tables):
     return "\n".join(lines)+"\n}\n"
 
 
-GUARD = "is_ai = no has_character_flag = ckcraft_enabled NOT = { has_character_flag = ckcraft_pending }"
+GUARD = "is_ai = no has_character_flag = ckcraft_enabled NOT = { has_character_flag = ckcraft_pending } NOT = { has_global_variable = ckcraft_return_actor }"
 # debug_log can localize without the event's ROOT/SCOPE data context. The
 # supported mode is singleplayer, so use the documented global player getter.
 # Keep the real chosen courtier on that character for localization to read.
@@ -110,8 +110,18 @@ def generate(tables):
     scenarios = {r["id"]:r for r in tables["scenarios"]["rows"]}
     events = ["# Generated. Do not edit.\nnamespace = ckcraft\n"]
     loc = {"ckcraft_enable_decision":"CKCraft einschalten", "ckcraft_enable_decision_desc":"Für eine separate Testkampagne: CK3-Reisen mit Minecraft verbinden.","ckcraft_enable_decision_tooltip":"Aktiviert die experimentelle Verbindung.","ckcraft_enable_decision_confirm":"Verbindung aktivieren", "ckcraft_free_travel_decision":"In Minecraft reisen","ckcraft_free_travel_decision_desc":"Deinen tatsächlichen CK3-Charakter in der Minecraft-Testwelt spielen.","ckcraft_free_travel_decision_tooltip":"Die lokale Verbindung erwartet eine Reise.","ckcraft_free_travel_decision_confirm":"Reisen", "ckcraft_cancel_decision":"Ausstehende Minecraft-Reise abbrechen","ckcraft_cancel_decision_desc":"Beendet eine abgebrochene Verbindung ohne Belohnung. Ein verspätetes Ergebnis wird ungültig.","ckcraft_cancel_decision_tooltip":"Nur für die Testkampagne.","ckcraft_cancel_decision_confirm":"Abbrechen"}
-    start = """if = { limit = { NOT = { has_variable = ckcraft_sequence } } set_variable = { name = ckcraft_sequence value = 0 } }
-        change_variable = { name = ckcraft_sequence add = 1 }
+    # A campaign-wide counter keeps a result for an old player character from
+    # matching sequence 1 on a new character. Seed from the prior prototype's
+    # character-local counter when upgrading an existing test campaign.
+    start = """if = { limit = { NOT = { has_global_variable = ckcraft_sequence_counter } }
+            set_global_variable = { name = ckcraft_sequence_counter value = 0 }
+            if = { limit = { has_variable = ckcraft_sequence }
+                set_global_variable = { name = ckcraft_sequence_counter value = var:ckcraft_sequence }
+            }
+        }
+        change_global_variable = { name = ckcraft_sequence_counter add = 1 }
+        set_variable = { name = ckcraft_sequence value = global_var:ckcraft_sequence_counter }
+        set_global_variable = { name = ckcraft_return_actor value = root }
         add_character_flag = ckcraft_pending"""
     for row in tables["scenarios"]["rows"]:
         rid = row["id"]
@@ -143,12 +153,15 @@ def generate(tables):
         events.append(f"""{row['ck3_event']} = {{
     type = character_event
     hidden = yes
-    trigger = {{ is_ai = no is_alive = yes has_character_flag = ckcraft_pending }}
+    trigger = {{ is_ai = no is_alive = yes has_character_flag = ckcraft_pending
+        OR = {{ NOT = {{ has_global_variable = ckcraft_return_actor }} this = global_var:ckcraft_return_actor }}
+    }}
     immediate = {{
         {reward}
         debug_log = ckcraft_ack_{row['id']}
         remove_character_flag = ckcraft_pending
         if = {{ limit = {{ has_variable = ckcraft_opponent }} remove_variable = ckcraft_opponent }}
+        if = {{ limit = {{ has_global_variable = ckcraft_return_actor }} remove_global_variable = ckcraft_return_actor }}
         if = {{ limit = {{ exists = current_travel_plan }} current_travel_plan = {{ resume_travel_plan = yes }} }}
     }}
 }}
@@ -173,7 +186,7 @@ def generate(tables):
             key = f"ckcraft_{hook['id']}"
             on_actions.append(f"{hook['target']} = {{ on_actions = {{ {key} }} }}\n{key} = {{ trigger = {{ {GUARD} }} events = {{ {event} }} }}")
         else:
-            decisions.append(f"{hook['target']} = {{\n    is_shown = {{ is_ai = no has_character_flag = ckcraft_enabled }}\n    is_valid = {{ NOT = {{ has_character_flag = ckcraft_pending }} is_alive = yes }}\n    effect = {{ trigger_event = {{ id = {event} }} }}\n    ai_check_interval = 0\n}}")
+            decisions.append(f"{hook['target']} = {{\n    is_shown = {{ is_ai = no has_character_flag = ckcraft_enabled }}\n    is_valid = {{ NOT = {{ has_character_flag = ckcraft_pending }} NOT = {{ has_global_variable = ckcraft_return_actor }} is_alive = yes }}\n    effect = {{ trigger_event = {{ id = {event} }} }}\n    ai_check_interval = 0\n}}")
     result["ck3/ckcraft/common/on_action/ckcraft_on_actions.txt"] = "\n\n".join(on_actions)+"\n"
     result["ck3/ckcraft/common/decisions/ckcraft_decisions.txt"] = "\n\n".join(decisions)+"\n"
     for lang in ["german","english"]:

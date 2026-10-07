@@ -28,11 +28,11 @@ public final class GeneratedDesign {
     );
     public record SystemSpec(String id, String owner, String contract, String implementation) {}
     public static final Map<String, SystemSpec> SYSTEMS = Map.ofEntries(
-        entry("ck3_export", new SystemSpec("ck3_export", "ck3", "singleplayer CKCRAFT1 request/ack via GetPlayer; actual character/sequence/prowess and persistent ckcraft_opponent reference, independent of debug_log ROOT/SCOPE context", "tools/design.py")),
+        entry("ck3_export", new SystemSpec("ck3_export", "ck3", "singleplayer CKCRAFT1 via GetPlayer; campaign-wide unique sequence, stored ckcraft_return_actor character reference and real ckcraft_opponent; independent of debug_log ROOT/SCOPE context", "tools/design.py")),
         entry("bridge", new SystemSpec("bridge", "python", "loopback authenticated singleplayer request/claim/result/ack state machine", "bridge/ckcraft/state.py")),
         entry("http", new SystemSpec("http", "python", "bounded JSON, no browser origins, constant time token check", "bridge/ckcraft/server.py")),
         entry("log_reader", new SystemSpec("log_reader", "python", "incremental frames, partial writes, rotation, no historic requests on initial start", "bridge/ckcraft/log_reader.py")),
-        entry("ck3_return", new SystemSpec("ck3_return", "python", "guarded numeric effect command, requires actual matching CK3 acknowledgement", "bridge/ckcraft/return_command.py")),
+        entry("ck3_return", new SystemSpec("ck3_return", "python", "guarded effect via global_var:ckcraft_return_actor and campaign-wide sequence; runtime IDs never used as historical character links; matching CK3 ACK required", "bridge/ckcraft/return_command.py")),
         entry("minecraft_scene", new SystemSpec("minecraft_scene", "fabric", "isolated dimension, real combat result, inventory recovery, abort and timeout", "minecraft/src/main/java/dev/ckcraft/CKCraft.java")),
         entry("network_client", new SystemSpec("network_client", "fabric", "asynchronous HTTP with main-thread game changes", "minecraft/src/main/java/dev/ckcraft/BridgeClient.java")),
         entry("owned_entity_cleanup", new SystemSpec("owned_entity_cleanup", "fabric", "only remove tagged CKCraft duelist leftovers on entity load; preserve other entities", "minecraft/src/main/java/dev/ckcraft/CKCraft.java")),

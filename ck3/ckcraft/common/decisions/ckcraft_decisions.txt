@@ -16,7 +16,7 @@ ckcraft_cancel_decision = {
 
 ckcraft_free_travel_decision = {
     is_shown = { is_ai = no has_character_flag = ckcraft_enabled }
-    is_valid = { NOT = { has_character_flag = ckcraft_pending } is_alive = yes }
+    is_valid = { NOT = { has_character_flag = ckcraft_pending } NOT = { has_global_variable = ckcraft_return_actor } is_alive = yes }
     effect = { trigger_event = { id = ckcraft.1001 } }
     ai_check_interval = 0
 }

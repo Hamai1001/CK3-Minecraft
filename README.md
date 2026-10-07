@@ -2,7 +2,7 @@
 
 Ein echtes Mashup von **Crusader Kings III** und **Minecraft: Java Edition**. CK3 bleibt das Hauptspiel. Duelle, Belagerungen, Schlachten, einzelne Ereignisse und Reisen sollen in Minecraft stattfinden und zurück auf die CK3-Kampagne wirken. Passende Situationen wechseln automatisch; freies Wechseln ist zusätzlich vorgesehen. Zuerst Einzelspieler, später optional Multiplayer mit getrennten Reichen.
 
-**Status: Entwicklungsprototyp, kein fertiger Melty-Release.** Die erste Umsetzung enthält einen nativen CK3-Skript-Mod, einen Fabric-Mod für Minecraft 1.21.1 und eine lokale Verbindung. Die CK3-Seite und der vollständige automatische Wechsel sind noch nicht im laufenden CK3 geprüft. Die Rückgabe liegt zunächst als geschützter Konsolenbefehl bereit; sie gilt erst nach der tatsächlichen Bestätigung im CK3-Log als übernommen. Eine manuelle Rückgabe ist kein Ein-Klick-Release.
+**Status: Entwicklungsprototyp, kein fertiger Melty-Release.** Die erste Umsetzung enthält einen nativen CK3-Skript-Mod, einen Fabric-Mod für Minecraft 1.21.1 und eine lokale Verbindung. Der Nutzer hat eine freie Reise einschließlich korrektem Namen, Minecraft-Rückkehrmeldung und CK3-ACK unter Crozier 1.20.0.4 mit Stand `8329bfe` bestätigt; dafür musste die historische Charakter-ID im manuellen Konsolenbefehl korrigiert werden. Der aktuelle generierte Rückweg verwendet stattdessen eine gespeicherte Charakterreferenz und wartet noch auf seinen eigenen Live-Test. Die Rückgabe gilt erst nach der tatsächlichen Bestätigung im CK3-Log als übernommen. Automatische Rückgabe und Ein-Klick-Installation stehen weiter aus.
 
 ## Erster Durchlauf
 
