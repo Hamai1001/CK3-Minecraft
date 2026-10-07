@@ -1,0 +1,22 @@
+# Generated.
+
+ckcraft_enable_decision = {
+    is_shown = { is_ai = no NOT = { has_character_flag = ckcraft_enabled } }
+    is_valid = { is_alive = yes }
+    effect = { add_character_flag = ckcraft_enabled }
+    ai_check_interval = 0
+}
+
+ckcraft_cancel_decision = {
+    is_shown = { is_ai = no has_character_flag = ckcraft_pending }
+    is_valid = { is_alive = yes }
+    effect = { trigger_event = { id = ckcraft.2003 } }
+    ai_check_interval = 0
+}
+
+ckcraft_free_travel_decision = {
+    is_shown = { is_ai = no has_character_flag = ckcraft_enabled }
+    is_valid = { NOT = { has_character_flag = ckcraft_pending } is_alive = yes }
+    effect = { trigger_event = { id = ckcraft.1001 } }
+    ai_check_interval = 0
+}

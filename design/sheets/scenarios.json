@@ -1,0 +1,49 @@
+{
+  "columns": {
+    "id": "string",
+    "label": "string",
+    "ck3_event": "string",
+    "enemy": "ref:enemies",
+    "distance": "int",
+    "radius": "int",
+    "floor_y": "int",
+    "timeout_seconds": "int",
+    "won": "ref:outcomes",
+    "lost": "ref:outcomes",
+    "aborted": "ref:outcomes",
+    "trigger": "string",
+    "light_spacing": "int"
+  },
+  "rows": [
+    {
+      "id": "travel_duel",
+      "label": "Reise und Wegduell",
+      "ck3_event": "ckcraft.1000",
+      "enemy": "courtier",
+      "distance": 24,
+      "radius": 20,
+      "floor_y": 96,
+      "timeout_seconds": 300,
+      "won": "won",
+      "lost": "lost",
+      "aborted": "aborted",
+      "trigger": "on_travel_plan_start",
+      "light_spacing": 5
+    },
+    {
+      "id": "free_travel",
+      "label": "Freies Reisen",
+      "ck3_event": "ckcraft.1001",
+      "enemy": "none",
+      "distance": 24,
+      "radius": 20,
+      "floor_y": 96,
+      "timeout_seconds": 600,
+      "won": "travelled",
+      "lost": "aborted",
+      "aborted": "aborted",
+      "trigger": "ckcraft_free_travel_decision",
+      "light_spacing": 5
+    }
+  ]
+}

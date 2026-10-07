@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-07",
+  "status": "development-prototype",
+  "design": {
+    "tables": 5,
+    "filledTypedCells": 112,
+    "referencesResolved": true,
+    "generatedFilesMatch": true
+  },
+  "automatedTests": {
+    "pythonPassed": 25,
+    "javaPassed": 3,
+    "gradleBuild": "passed"
+  },
+  "minecraft": {
+    "version": "1.21.1",
+    "fabricLoader": "0.16.10",
+    "client": "actual isolated Fabric development client on Xvfb/Linux",
+    "gameExitCode": 0,
+    "inputSource": "synthetic CK3 log frames, not a real campaign",
+    "enemy": {
+      "prowess": 18,
+      "health": 30,
+      "attackDamage": 3,
+      "movementAfterDuelStartObserved": true
+    },
+    "victory": "command-driven /kill after actual fight start; RETURN_PENDING/won before synthetic ACK",
+    "freeTravel": "/ckcraft return -> RETURN_PENDING/travelled before synthetic ACK",
+    "restoration": {
+      "checkedAfterGracefulWorldSave": true,
+      "position": [
+        -8.5,
+        63,
+        9.5
+      ],
+      "health": 20,
+      "gamemode": "survival",
+      "inventory": "7 diamonds in original slot 0"
+    },
+    "snapshot": "minecraft-travel-smoke.png",
+    "jarSha256": "4922fd61bb113a9537b8f4485b794e11307bb9b83851e7d563be7a3b4fede23d"
+  },
+  "liveCK3RoundtripVerified": false,
+  "ck3VersionTested": null,
+  "automatedCK3ReturnImplemented": false,
+  "windowsInstallationVerified": false,
+  "oneClickVerified": false,
+  "multiplayerImplemented": false,
+  "releasePublished": false,
+  "remaining": [
+    "Current CK3 native scripts and actual request/ACK/result effects on Windows",
+    "Safe automatic CK3 return and game switching",
+    "Portable Windows runtime and one-click installation",
+    "Sieges, battles, additional events and optional multiplayer",
+    "License/remix/listing choices and genuine full roundtrip media"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "columns": {
+    "id": "string",
+    "owner": "string",
+    "contract": "string",
+    "implementation": "string"
+  },
+  "rows": [
+    {
+      "id": "ck3_export",
+      "owner": "ck3",
+      "contract": "CKCRAFT1 request/ack log frames with character, sequence and actual prowess",
+      "implementation": "tools/design.py"
+    },
+    {
+      "id": "bridge",
+      "owner": "python",
+      "contract": "loopback authenticated singleplayer request/claim/result/ack state machine",
+      "implementation": "bridge/ckcraft/state.py"
+    },
+    {
+      "id": "http",
+      "owner": "python",
+      "contract": "bounded JSON, no browser origins, constant time token check",
+      "implementation": "bridge/ckcraft/server.py"
+    },
+    {
+      "id": "log_reader",
+      "owner": "python",
+      "contract": "incremental frames, partial writes, rotation, no historic requests on initial start",
+      "implementation": "bridge/ckcraft/log_reader.py"
+    },
+    {
+      "id": "ck3_return",
+      "owner": "python",
+      "contract": "guarded numeric effect command, requires actual matching CK3 acknowledgement",
+      "implementation": "bridge/ckcraft/return_command.py"
+    },
+    {
+      "id": "minecraft_scene",
+      "owner": "fabric",
+      "contract": "isolated dimension, real combat result, inventory recovery, abort and timeout",
+      "implementation": "minecraft/src/main/java/dev/ckcraft/CKCraft.java"
+    },
+    {
+      "id": "network_client",
+      "owner": "fabric",
+      "contract": "asynchronous HTTP with main-thread game changes",
+      "implementation": "minecraft/src/main/java/dev/ckcraft/BridgeClient.java"
+    },
+    {
+      "id": "owned_entity_cleanup",
+      "owner": "fabric",
+      "contract": "only remove tagged CKCraft duelist leftovers on entity load; preserve other entities",
+      "implementation": "minecraft/src/main/java/dev/ckcraft/CKCraft.java"
+    },
+    {
+      "id": "player_recovery",
+      "owner": "fabric",
+      "contract": "save original state before scene; persist restored player data before marking restored or clearing recovery",
+      "implementation": "minecraft/src/main/java/dev/ckcraft/RecoveryStore.java"
+    }
+  ]
+}

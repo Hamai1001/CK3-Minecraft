@@ -1,0 +1,11 @@
+{
+  "schemaVersion":1,
+  "id":"ckcraft",
+  "version":"${version}",
+  "name":"CKCraft: Campaign Bridge",
+  "description":"Development bridge: actual CK3 characters and prowess in an isolated Minecraft travel/duel scene. Live CK3 integration requires a playtest.",
+  "authors":["Hamai1001"],
+  "environment":"*",
+  "entrypoints":{"main":["dev.ckcraft.CKCraft"]},
+  "depends":{"fabricloader":">=0.16.10","minecraft":"1.21.1","java":">=21","fabric-api":"*"}
+}

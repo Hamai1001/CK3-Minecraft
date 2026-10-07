@@ -1,0 +1,7 @@
+{
+  "columns":{"id":"string","kind":"string","target":"string","scenario":"ref:scenarios","guard":"string"},
+  "rows":[
+    {"id":"travel_start","kind":"on_action","target":"on_travel_plan_start","scenario":"travel_duel","guard":"human_enabled_not_pending"},
+    {"id":"free_travel","kind":"decision","target":"ckcraft_free_travel_decision","scenario":"free_travel","guard":"human_enabled_not_pending"}
+  ]
+}

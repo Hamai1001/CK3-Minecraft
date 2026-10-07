@@ -1,0 +1,9 @@
+{
+  "columns":{"id":"string","ck3_event":"string","label":"string","prestige":"int","gold":"int"},
+  "rows":[
+    {"id":"won","ck3_event":"ckcraft.2001","label":"Das Wegduell gewonnen","prestige":25,"gold":0},
+    {"id":"lost","ck3_event":"ckcraft.2002","label":"Das Wegduell verloren","prestige":-10,"gold":0},
+    {"id":"aborted","ck3_event":"ckcraft.2003","label":"Unverändert nach CK3 zurückkehren","prestige":0,"gold":0},
+    {"id":"travelled","ck3_event":"ckcraft.2004","label":"Die Reise beendet","prestige":0,"gold":0}
+  ]
+}

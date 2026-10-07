@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+.gradle/
+build/
+dist/
+run/
+.runtime/
+*.log
+*.ck3
+*.dat
+*.zip
+.idea/

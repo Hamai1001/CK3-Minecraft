@@ -1,0 +1,40 @@
+{
+  "columns": {
+    "id": "string",
+    "entity": "string",
+    "health_base": "int",
+    "health_per_prowess": "int",
+    "health_cap": "int",
+    "attack_base": "int",
+    "attack_per_ten_prowess": "int",
+    "attack_cap": "int",
+    "weapon": "string",
+    "weapon_modifiers": "string"
+  },
+  "rows": [
+    {
+      "id": "courtier",
+      "entity": "minecraft:zombie",
+      "health_base": 12,
+      "health_per_prowess": 1,
+      "health_cap": 60,
+      "attack_base": 2,
+      "attack_per_ten_prowess": 1,
+      "attack_cap": 8,
+      "weapon": "minecraft:iron_sword",
+      "weapon_modifiers": "none"
+    },
+    {
+      "id": "none",
+      "entity": "none",
+      "health_base": 0,
+      "health_per_prowess": 0,
+      "health_cap": 0,
+      "attack_base": 0,
+      "attack_per_ten_prowess": 0,
+      "attack_cap": 0,
+      "weapon": "none",
+      "weapon_modifiers": "none"
+    }
+  ]
+}
